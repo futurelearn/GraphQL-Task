@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Setup
 
-Things you may want to cover:
+Ensure you running Ruby 2.7.7 and have the bundler gem.
 
-* Ruby version
+To install the gems run:
 
-* System dependencies
+`bundle install`
 
-* Configuration
+To run the application:
 
-* Database creation
+`bundle exec rails server`
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Once running the website will be available at http://localhost:3000

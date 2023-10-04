@@ -8,6 +8,10 @@ To install the gems run:
 
 `bundle install`
 
+To setup the database:
+
+`rails db:setup`
+
 To run the application:
 
 `bundle exec rails server`

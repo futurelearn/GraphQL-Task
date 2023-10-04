@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_04_075725) do
+ActiveRecord::Schema.define(version: 2023_10_04_104441) do
 
   create_table "collection_memberships", id: false, force: :cascade do |t|
     t.integer "collection_id", null: false
@@ -36,6 +36,14 @@ ActiveRecord::Schema.define(version: 2023_10_04_075725) do
     t.boolean "published", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "discounts", force: :cascade do |t|
+    t.integer "amount"
+    t.integer "collection_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["collection_id"], name: "index_discounts_on_collection_id"
   end
 
   add_foreign_key "collection_memberships", "collections"

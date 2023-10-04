@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_04_074052) do
+ActiveRecord::Schema.define(version: 2023_10_04_075725) do
+
+  create_table "collection_memberships", id: false, force: :cascade do |t|
+    t.integer "collection_id", null: false
+    t.integer "course_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["collection_id"], name: "index_collection_memberships_on_collection_id"
+    t.index ["course_id"], name: "index_collection_memberships_on_course_id"
+  end
+
+  create_table "collections", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.text "description"
+    t.string "image_path"
+    t.boolean "published", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "courses", force: :cascade do |t|
     t.string "title", default: "", null: false
@@ -20,4 +38,6 @@ ActiveRecord::Schema.define(version: 2023_10_04_074052) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "collection_memberships", "collections"
+  add_foreign_key "collection_memberships", "courses"
 end

@@ -18,6 +18,15 @@ module Types
       ids.map { |id| context.schema.object_from_id(id, context) }
     end
 
+    field :includes, Boolean, null: true, description: "Returns is the course belongs to collection" do
+      argument :collection, ID, required: true
+      argument :course, ID, required: true
+    end
+
+    def includes(collection:, course:)
+      Collection.find(collection).courses.exists?(id: course)
+    end
+
     implements Interfaces::CourseQueries
     implements Interfaces::CollectionQueries
   end

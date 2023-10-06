@@ -18,10 +18,6 @@ module Types
       ids.map { |id| context.schema.object_from_id(id, context) }
     end
 
-    field :courses, [Types::CourseType], null: false, description: "Returns a list of courses"
-
-    def courses
-      Course.all
-    end
+    implements Interfaces::CourseQueries
   end
 end

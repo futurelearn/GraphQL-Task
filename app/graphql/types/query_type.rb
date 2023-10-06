@@ -19,5 +19,6 @@ module Types
     end
 
     implements Interfaces::CourseQueries
+    implements Interfaces::CollectionQueries
   end
 end

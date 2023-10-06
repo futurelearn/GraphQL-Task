@@ -8,5 +8,7 @@ module Types
     def test_field
       "Hello World"
     end
+
+    implements Interfaces::CourseMutations
   end
 end

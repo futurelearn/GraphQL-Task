@@ -2,8 +2,8 @@
 
 one:
   amount: 1
-  references: 
+  collection:
 
 two:
   amount: 1
-  references: 
+  collection:

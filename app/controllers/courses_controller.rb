@@ -3,7 +3,9 @@ class CoursesController < ApplicationController
 
   # GET /courses
   def index
-    @courses = Course.all
+    @courses = filter_courses(Course.all)
+
+    render json: @courses
   end
 
   # GET /courses/1
@@ -55,4 +57,12 @@ class CoursesController < ApplicationController
     def course_params
       params.require(:course).permit(:title, :description, :published)
     end
+
+  def filter_courses(courses)
+    if params[:published].present?
+      courses.where(published: params[:published])
+    else
+      courses
+    end
+  end
 end

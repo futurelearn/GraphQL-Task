@@ -5,9 +5,32 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
     @course = courses(:one)
   end
 
-  test "should get index" do
+  test "should get index with all courses" do
     get courses_url
     assert_response :success
+    assert_equal Course.count, JSON.parse(response.body).size
+  end
+
+  test "should get index with published param as true" do
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: false } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: false } }
+    get courses_url, params: { published: true }
+    assert_response :success
+    assert_equal Course.where(published: true).count, JSON.parse(response.body).size
+  end
+
+  test "should get index with published param as false" do
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: false } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: false } }
+    get courses_url, params: { published: false }
+    assert_response :success
+    assert_equal Course.where(published: false).count, JSON.parse(response.body).size
   end
 
   test "should get new" do

@@ -23,5 +23,11 @@ module Types
     def courses
       Course.all
     end
+
+    field :collections, [CollectionType], null: false, description: "Returns a list of collections"
+
+    def collections
+      Collection.includes(:courses).all
+    end
   end
 end

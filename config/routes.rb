@@ -6,5 +6,5 @@ Rails.application.routes.draw do
   root 'courses#index'
 
   resources :courses
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  get '/collections/:collection_id/courses/:course_id/belongs_to', to: 'courses#check_membership', as: :check_membership
 end

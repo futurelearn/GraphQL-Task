@@ -9,3 +9,13 @@ two:
   title: MyString
   description: MyText
   published: false
+
+unpublished_course:
+  title: MyString
+  description: MyText
+  published: false
+
+published_course:
+  title: MyString
+  description: MyText
+  published: true

@@ -5,9 +5,32 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
     @course = courses(:one)
   end
 
-  test "should get index" do
+  test "should get index with all courses" do
     get courses_url
     assert_response :success
+    assert_equal Course.count, JSON.parse(response.body).size
+  end
+
+  test "should get index with published param as true" do
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: false } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: false } }
+    get courses_url, params: { published: true }
+    assert_response :success
+    assert_equal Course.where(published: true).count, JSON.parse(response.body).size
+  end
+
+  test "should get index with published param as false" do
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: true } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: false } }
+    post courses_url, params: { course: { description: @course.description, title: @course.title, published: false } }
+    get courses_url, params: { published: false }
+    assert_response :success
+    assert_equal Course.where(published: false).count, JSON.parse(response.body).size
   end
 
   test "should get new" do
@@ -44,5 +67,26 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to courses_url
+  end
+
+  test "should check if course belongs to a collection" do
+    collection = collections(:one)
+    course = courses(:one)
+    collection.courses << course
+
+    get check_membership_path(collection, course), as: :json
+    assert_response :success
+
+    assert_equal({ "belongs_to_collection" => true }, JSON.parse(response.body))
+  end
+
+  test "should check if course belongs to a collection and return false" do
+    collection = collections(:one)
+    course = courses(:one)
+
+    get check_membership_path(collection, course), as: :json
+    assert_response :success
+
+    assert_equal({ "belongs_to_collection" => false }, JSON.parse(response.body))
   end
 end

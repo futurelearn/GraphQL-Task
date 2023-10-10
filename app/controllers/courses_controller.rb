@@ -3,7 +3,9 @@ class CoursesController < ApplicationController
 
   # GET /courses
   def index
-    @courses = Course.all
+    @courses = filter_courses(Course.all)
+
+    render json: @courses
   end
 
   # GET /courses/1
@@ -45,6 +47,21 @@ class CoursesController < ApplicationController
     redirect_to courses_url, notice: 'Course was successfully destroyed.'
   end
 
+  def check_membership
+    begin
+      collection = Collection.find(params[:collection_id])
+      course = Course.find(params[:course_id])
+
+      belongs_to_collection = collection.courses.exists?(course.id)
+
+      render json: { belongs_to_collection: belongs_to_collection }
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { error: 'Collection or course not found' }, status: :not_found
+    rescue => e
+      render json: { error: 'Unexpected error ' }, status: :internal_server_error
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_course
@@ -55,4 +72,12 @@ class CoursesController < ApplicationController
     def course_params
       params.require(:course).permit(:title, :description, :published)
     end
+
+  def filter_courses(courses)
+    if params[:published].present?
+      courses.where(published: params[:published])
+    else
+      courses
+    end
+  end
 end

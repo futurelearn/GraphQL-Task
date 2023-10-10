@@ -6,11 +6,16 @@ module Types
     field :image_path, String, null: true
     field :published, Boolean, null: false
     field :courses, [CourseType], null: true
+    field :largest_discount_percentage, Integer, null: true
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
   end
 
   def courses
     object.courses
+  end
+
+  def largest_discount_percentage
+    object.largest_discount_percentage
   end
 end

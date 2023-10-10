@@ -47,6 +47,21 @@ class CoursesController < ApplicationController
     redirect_to courses_url, notice: 'Course was successfully destroyed.'
   end
 
+  def check_membership
+    begin
+      collection = Collection.find(params[:collection_id])
+      course = Course.find(params[:course_id])
+
+      belongs_to_collection = collection.courses.exists?(course.id)
+
+      render json: { belongs_to_collection: belongs_to_collection }
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { error: 'Collection or course not found' }, status: :not_found
+    rescue => e
+      render json: { error: 'Unexpected error ' }, status: :internal_server_error
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_course

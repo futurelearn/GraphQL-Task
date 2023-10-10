@@ -68,4 +68,25 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to courses_url
   end
+
+  test "should check if course belongs to a collection" do
+    collection = collections(:one)
+    course = courses(:one)
+    collection.courses << course
+
+    get check_membership_path(collection, course), as: :json
+    assert_response :success
+
+    assert_equal({ "belongs_to_collection" => true }, JSON.parse(response.body))
+  end
+
+  test "should check if course belongs to a collection and return false" do
+    collection = collections(:one)
+    course = courses(:one)
+
+    get check_membership_path(collection, course), as: :json
+    assert_response :success
+
+    assert_equal({ "belongs_to_collection" => false }, JSON.parse(response.body))
+  end
 end
